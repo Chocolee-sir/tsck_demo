@@ -1,0 +1,150 @@
+{% extends 'base/base.html' %}
+
+{% block body %}
+
+
+{%  block user_modal %}
+
+{% endblock %}
+
+
+<!-- Start #header -->
+<div id="header">
+    <div class="container-fluid">
+
+        <div class="navbar">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">
+                    <i class=" text-logo-element animated bounceIn"></i><span class="text-logo">tsck</span><span
+                        class="text-slogan">ops</span>
+                </a>
+            </div>
+            <nav class="top-nav" role="navigation">
+                <ul class="nav navbar-nav pull-left">
+                    <li id="toggle-sidebar-li">
+                        <a href="#" id="toggle-sidebar"><i class="en-arrow-left2"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" class="full-screen"><i class="fa-fullscreen"></i></a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav pull-right">
+
+
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" style="font-size: 15px">
+                            <img class="user-avatar" src="/static/assets/img/avatars/default.png" alt="{{ username }}">
+                            {{ username }}
+                        </a>
+                        <ul class="dropdown-menu right" role="menu">
+                            <li>
+                                <a href="#" id="personalInfoid"><i class="st-user"></i>个人信息</a>
+                            </li>
+                            <li>
+                                <a href="login-out.html"><i class="im-exit"></i>退出</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- Start .header-inner -->
+</div>
+<!-- End #header -->
+<!-- Start #sidebar -->
+<div id="sidebar">
+    <!-- Start .sidebar-inner -->
+    <div class="sidebar-inner">
+        <!-- Start #sideNav -->
+        <ul id="sideNav" class="nav nav-pills nav-stacked">
+
+            <li>
+                <a href="index.html">仪表盘<i class="im-screen"></i></a>
+            </li>
+
+            {% for key, value in permission_list.items|dictsort:"0.lower" %}
+                <li>
+                    <a href="{{ value.1 }}">{{ value.0 }}<i class="{{ value.2 }}"></i></a>
+                </li>
+            {% endfor %}
+
+        </ul>
+        <!-- End #sideNav -->
+
+        <!-- End .sidebar-panel -->
+    </div>
+    <!-- End .sidebar-inner -->
+</div>
+<!-- End #sidebar -->
+<!-- Start #right-sidebar -->
+<div id="right-sidebar" class="hide-sidebar">
+    <!-- Start .sidebar-inner -->
+    <div class="sidebar-inner">
+        <div class="sidebar-panel mt0">
+            <div class="sidebar-panel-content fullwidth pt0">
+                <div class="chat-user-list">
+                    <form class="form-horizontal chat-search" role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search for user...">
+                            <button type="submit"><i class="ec-search s16"></i>
+                            </button>
+                        </div>
+                        <!-- End .form-group  -->
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End .sidebar-inner -->
+</div>
+<!-- End #right-sidebar -->
+<!-- Start #content -->
+<div id="content">
+    <!-- Start .content-wrapper -->
+    <div class="content-wrapper">
+        <div class="row">
+            <!-- Start .row -->
+            <!-- Start .page-header -->
+            <div class="col-lg-12 heading">
+                <h1 class="page-header"><i class="{% block icon_name %}im-screen{% endblock %}"></i>{% block pro_name %}仪表盘{% endblock %}</h1>
+                <!-- Start .bredcrumb -->
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="im-home"></i>
+                        <a href="index.html">首页</a>
+                        <i class="en-arrow-right7"></i>
+                    </li>
+                    <li>
+                        <i class="{% block icon_in_name %}im-screen{% endblock %}"></i>
+                        <a href="{% block this_url %}index.html{% endblock %}">{% block pro_in_name %}仪表盘{% endblock %}</a>
+                    </li>
+                    {% block this_in_head_title %}{% endblock %}
+                </ul>
+
+            </div>
+            <!-- End .page-header -->
+
+        {% block page_body %}
+
+        {% endblock %}
+
+
+        </div>
+        <!-- End .row -->
+
+        <!-- End .outlet -->
+    </div>
+    <!-- End .content-wrapper -->
+    <div class="clearfix"></div>
+</div>
+<!-- End #content -->
+
+{% endblock %}
+
+
+

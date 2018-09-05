@@ -1,0 +1,100 @@
+{% extends 'backend/backend_index.html' %}
+
+{% block pro_name %}{{ menu_info.0 }}{% endblock %}
+
+{% block pro_in_name %}{{ menu_info.0 }}{% endblock %}
+
+{% block icon_name %}{{ menu_info.1 }}{% endblock %}
+
+{% block icon_in_name %}{{ menu_info.1 }}{% endblock %}
+
+{% block this_url %}{{ menu_info.2 }}{% endblock %}
+
+
+
+{% block page_body %}
+
+    <div class="panel-body">
+
+        <a class="btn btn-primary right" href="add-user.html" role="button">添加用户</a>
+
+        <div style="display: inline-block; float: right" class="dataTables_filter" id="datatable1_filter">
+            <form method="get" action="user.html">
+                {% csrf_token %}
+                <label>
+                    <div style="display: inline-block; float: left;margin-right: 5px">
+                        <input type="search" class="form-control input-large" name="q" placeholder="只支持用户名" aria-controls="datatable1">
+                    </div>
+                    <div style="display: inline-block; float: right">
+                        <button type="submit" class="btn btn-default" >搜索</button>
+                    </div>
+                </label>
+            </form>
+        </div>
+
+
+
+        <table class="table table-bordered" id="userInfoId">
+            <thead>
+            <tr>
+                <th>用户名</th>
+                <th>真实姓名</th>
+                <th>性别</th>
+                <th>角色</th>
+                <th>手机号</th>
+                <th>邮箱</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {% for row in users_info %}
+                <tr nid="{{ row.u.id }}">
+                    <td na="nid" style="display: none">{{ row.u.id }}</td>
+                    <td na="username">{{ row.u.username }}</td>
+                    <td na="realname">{{ row.u.realname }}</td>
+                    {% if row.u.sex == 1 %}
+                        <td na="sex">男</td>
+                    {% else %}
+                        <td na="sex">女</td>
+                    {% endif %}
+                    <td na="role_id" rid="{{ row.r.id }}">{{ row.r.caption }}</td>
+                    <td na="phone">{{ row.u.phone }}</td>
+                    <td na="email">{{ row.u.email }}</td>
+                    <td delusername="{{ row.u.realname }}">
+                        <a class="btn btn-primary btn-xs edit-row" href="#">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            编辑
+                        </a>
+                        |
+                        <a class="btn btn-danger btn-xs del-row">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                            删除
+                        </a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+
+        <div class="dataTables_paginate paging_bs_full">
+            <ul class="pagination left small" style="margin-top: 0">
+                {{ page_obj.page_str|safe }}
+            </ul>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+

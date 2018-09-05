@@ -1,0 +1,78 @@
+{% extends 'backend/backend_index.html' %}
+
+{% block pro_name %}用户管理{% endblock %}
+
+{% block pro_in_name %}用户管理{% endblock %}
+
+{% block icon_name %}st-users{% endblock %}
+
+{% block icon_in_name %}st-users{% endblock %}
+
+{% block this_url %}user.html{% endblock %}
+
+{% block this_in_head_title %}
+    <li>
+        <i class="en-arrow-right7"></i>
+        <i class="{{ menu_info.1 }}"></i>
+        <a href="{{ menu_info.2 }}">{{ menu_info.0 }}</a>
+    </li>
+{% endblock %}
+
+
+{% block page_body %}
+
+    <div class="panel panel-default toggle col-md-12">
+        <!-- Start .panel -->
+        <div class="panel-heading">
+            <h3 class="panel-title">添加用户栏</h3>
+        </div>
+        <div class="panel-body">
+            <form  action="add-user.html" method="POST"  novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    {{ forms_add_user.username }} <p style="color: red">{{ forms_add_user.errors.username.0 }}<p>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    {{ forms_add_user.password }} <p style="color: red">{{ forms_add_user.errors.password.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">角色</label>
+                    {{ forms_add_user.role_id }}
+                </div>
+
+                <div class="form-group">
+                    <label for="sex" class="control-label">性别</label>
+                    <div class="col-lg-1">
+                        {{ forms_add_user.sex }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="realname">真实姓名</label>
+                    {{ forms_add_user.realname }} <p style="color: red">{{ forms_add_user.errors.realname.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">手机号</label>
+                    {{ forms_add_user.phone }} <p style="color: red">{{ forms_add_user.errors.phone.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">邮箱</label>
+                    {{ forms_add_user.email }} <p style="color: red">{{ forms_add_user.errors.email.0 }}<p>
+                </div>
+                <button type="submit" class="btn btn-info">提交</button>
+            </form>
+        </div>
+    </div>
+    <!-- End .panel -->
+
+
+
+
+
+
+{% endblock %}
