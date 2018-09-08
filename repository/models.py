@@ -117,17 +117,24 @@ class Workorders(models.Model):
     detail = models.TextField()
     project_name = models.ForeignKey(Projects, on_delete=models.CASCADE)
     env_label = models.ForeignKey(Envlists, on_delete=models.CASCADE)
-    create_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
     handler = models.ForeignKey(User, on_delete=models.CASCADE, related_name='h', null=True, blank=True)
     handler_role = models.CharField(max_length=32, null=True, blank=True)
-    finish_time = models.DateTimeField(null=True, blank=True)
-    status_choices = (
+    handle_time = models.DateTimeField(null=True, blank=True)
+    handle_status_choices = (
         (1, '未处理'),
         (2, '处理中'),
         (3, '已处理'),
     )
-    status = models.IntegerField(choices=status_choices, default=1)
-    solution = models.TextField(null=True, blank=True)
+    handle_status = models.IntegerField(choices=handle_status_choices, default=1)
+    ops_result = models.TextField(null=True, blank=True)
+    test_result = models.TextField(null=True, blank=True)
+    role_status_choices = (
+        (1, '开发工程师'),
+        (2, '运维工程师'),
+        (3, '测试工程师'),
+    )
+    role_status = models.IntegerField(choices=role_status_choices, default=1)
 
     class Meta:
         verbose_name_plural = '工单列表'

@@ -7,7 +7,6 @@ from utils import pager
 from utils import forms_plugin
 
 
-
 # 用户页面首页，默认显示所有用户，倒序排列
 @login_auth
 def index_user(request, *args, **kwargs):
