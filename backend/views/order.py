@@ -202,7 +202,7 @@ def test_handle_order(request):
                         handle_status=3,
                         handler_id=request_info.nid(),
                         role_status=3,
-                        ops_result=result,
+                        test_result=result,
                         handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                     )
                 else:
@@ -211,7 +211,7 @@ def test_handle_order(request):
                         handle_status=4,
                         handler_id=request_info.nid(),
                         role_status=3,
-                        ops_result=result,
+                        test_result=result,
                         handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                     )
 
