@@ -119,12 +119,19 @@ class Workorders(models.Model):
     env_label = models.ForeignKey(Envlists, on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True)
     handler = models.ForeignKey(User, on_delete=models.CASCADE, related_name='h', null=True, blank=True)
-    handler_role = models.CharField(max_length=32, null=True, blank=True)
+    handler_role_status = (
+        (1, '运维工程师'),
+        (2, '测试工程师'),
+        (3, '开发工程师'),
+        (4, '无'),
+    )
+    handler_role = models.IntegerField(choices=handler_role_status, default=1)
     handle_time = models.DateTimeField(null=True, blank=True)
     handle_status_choices = (
         (1, '未处理'),
         (2, '处理中'),
         (3, '已处理'),
+        (4, '废单'),
     )
     handle_status = models.IntegerField(choices=handle_status_choices, default=1)
     ops_result = models.TextField(null=True, blank=True)

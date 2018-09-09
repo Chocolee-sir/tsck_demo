@@ -16,35 +16,33 @@
 
     <div class="panel-body">
 
-        <a class="btn btn-primary right" href="#" id="createOrderId" role="button">创建工单</a>
 
         <div style="display: inline-block; float: right" class="dataTables_filter" id="datatable1_filter">
             <form method="get" action="#">
                 {% csrf_token %}
                 <label>
                     <div style="display: inline-block; float: left;margin-right: 5px">
-                        <input type="search" class="form-control input-large" name="q" placeholder="只支持标题"
-                               aria-controls="datatable1">
+                        <input type="search" class="form-control input-large" name="q" placeholder="只支持标题" aria-controls="datatable1">
                     </div>
                     <div style="display: inline-block; float: right">
-                        <button type="submit" class="btn btn-default">搜索</button>
+                        <button type="submit" class="btn btn-default" >搜索</button>
                     </div>
                 </label>
             </form>
         </div>
 
 
-        <table class="table table-bordered" id="orderInfoId">
+
+        <table class="table table-bordered" id="testOtherOrderId">
             <thead>
             <tr>
                 <th>工单标题</th>
                 <th>项目名称</th>
                 <th>变更环境</th>
                 <th>状态</th>
+                <th>创建者</th>
                 <th>创建时间</th>
                 <th>处理者</th>
-                <th>NEXT执行角色</th>
-                <th>处理时间</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -56,51 +54,41 @@
                     <td na="nid" style="display: none">{{ row.id }}</td>
                     <td na="detail" style="display: none">{{ row.detail }}</td>
                     {% if row.title|length >= 10 %}
-                        <td na="title">{{ row.title|slice:"10" }}...</td>
+                        <td na="title" ><a href="#" class="show-detail-ok">{{ row.title|slice:"10" }}...</a></td>
                     {% else %}
-                        <td na="title">{{ row.title}}</td>
+                        <td na="title" ><a href="#" class="show-detail-ok">{{ row.title }}</a></td>
                     {% endif %}
                     <td na="project_name" pid="{{ row.project_name.id }}">{{ row.project_name.project_name }}</td>
                     <td na="env" eid="{{ row.env_label.id }}">{{ row.env_label.env }}</td>
                     <td>{{ row.get_handle_status_display }}</td>
+                    <td uid="{{ row.creator.id }}"><a href="#" class="show-creator-info">{{ row.creator.realname }}</a></td>
                     <td>{{ row.create_time|date:"Y-m-d H:i:s" }}</td>
-                    <td uid="{{ row.creator.id }}"><a href="#" class="show-user-info">{{ row.handler.realname }}</a>
-                    </td>
-                    <td>{{ row.get_handler_role_display }}</td>
-                    <td>{{ row.handle_time|date:"Y-m-d H:i:s" }}</td>
+                    <td uid="{{ row.handler.id }}"><a href="#" class="show-handler-info">{{ row.handler.realname }}</a></td>
                     <td>
-
-                        {% if row.handle_status == 1 and row.role_status == 1 %}
-                            <a class="btn btn-primary btn-xs dev-order-edit-row" href="#">
+                        {% if row.handle_status == 2 and row.role_status == 2 %}
+                            <a class="btn btn-info btn-xs ops-result-show" href="#">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                编辑
+                                运维已变更
                             </a>
                             |
-                            <a class="btn btn-danger btn-xs dev-order-del-row">
-                                <i class="fa fa-times" aria-hidden="true"></i>
-                                删除
+                            <a class="btn btn-purple btn-xs test-order-edit-row" href="#">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                处理
                             </a>
-                        {% else %}
-                            {% if row.role_status == 2 %}
-                                <a class="btn btn-info btn-xs ops-result-show" href="#">
+
+                        {% elif row.role_status == 3 %}
+                            {% if row.handle_status == 4 %}
+                                <a class="btn btn-pink btn-xs test-result-show" href="#">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    运维已变更
+                                    测试失败|查看
                                 </a>
-                            {% elif row.role_status == 3 %}
-                                {% if row.handle_status == 4 %}
-                                    <a class="btn btn-pink btn-xs test-result-show" href="#">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                        测试失败|查看
-                                    </a>
-                                {% else %}
-                                    <a class="btn btn-success btn-xs test-result-show" href="#">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                        测试完成
-                                    </a>
-                                {% endif %}
+                            {% else %}
+                                <a class="btn btn-success btn-xs test-result-show" href="#">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    测试完成
+                                </a>
                             {% endif %}
                         {% endif %}
-
 
                     </td>
                 </tr>

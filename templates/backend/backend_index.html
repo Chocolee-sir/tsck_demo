@@ -248,26 +248,26 @@
         </div>
     </div>
 
-    <!-- 模态框（Modal）传参数使用 -->
-    <div class="modal fade" id="argvModal" data-backdrop="static" style="overflow-y: auto">
+    <!-- 模态框（Modal）删除工单 -->
+    <div class="modal fade" id="deleteOrderModal" data-backdrop="static" style="overflow-y: auto">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <h4 class="modal-title" id="argvTitle">
+                    <h4 class="modal-title" id="deleteOrderTitle">
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <input style="display: none;" type="text" id="argvNid"/>
-                    <div id="argvText"></div>
+                    <input style="display: none;" type="text" id="deleteOrderNid"/>
+                    <div id="deleteOrderText"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"  id="argvCancelId">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"  id="deleteOrderCancelId">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="argvSureId">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="deleteOrderSureId" >
                         确定
                     </button>
                 </div>
@@ -299,7 +299,7 @@
                         <div class="form-group">
                             <label for="detail" class="col-sm-2 control-label">变更内容</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" name="detail" id="orderTextArea" rows="5"></textarea>
+                                <textarea class="form-control" name="detail"  rows="5"></textarea>
                             </div>
                         </div>
 
@@ -336,6 +336,107 @@
             </div>
         </div>
     </div>
+
+    <!-- 模态框（Modal） 运维处理工单-->
+    <div class="modal fade" id="handleOrderModal" data-backdrop="static" style="overflow-y: auto">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="argvHandleTitle">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        {% csrf_token %}
+                        <input type="text" name="nid" id="handleDataId" style="display: none">
+                        <div class="form-group">
+                            <label for="result" class="col-sm-2 control-label">处理详情</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="result" rows="5" placeholder="请输入内容"></textarea>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <span id="handleOrderErrorMsg" style="color: red;float: left"></span>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btnHandleOrderSave">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框（Modal）显示工单内容 -->
+    <div class="modal fade" id="showDetailModal" data-backdrop="static" style="overflow-y: auto">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="showDetailTitle">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <input style="display: none;" type="text" id="showDetailNid"/>
+                    <div id="showDetailText"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!-- 模态框（Modal） 测试处理工单-->
+    <div class="modal fade" id="testHandleOrderModal" data-backdrop="static" style="overflow-y: auto">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="testHandleTitle">
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        {% csrf_token %}
+                        <input type="text" name="nid" id="testHandleDataId" style="display: none">
+                        <div class="form-group">
+                            <label for="result" class="col-sm-2 control-label">处理详情</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="result" rows="5" placeholder="请输入内容"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_result" class="col-sm-2 control-label">最终结果</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="last_result">
+                                    <option value="1">成功</option>
+                                    <option value="2">失败</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <span id="testHandleOrderErrorMsg" style="color: red;float: left"></span>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btnTestHandleOrderSave">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
 

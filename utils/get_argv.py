@@ -4,6 +4,9 @@ __author__ = 'Chocolee'
 from django.shortcuts import redirect
 from repository import models
 import hashlib
+from django.db.models import Q
+import time
+
 
 
 class GetArgvHelper(object):
@@ -73,7 +76,7 @@ class GetArgvHelper(object):
         pwd_md5.update(password.encode(encoding='utf-8'))
         return pwd_md5.hexdigest()
 
-    # 获取开发权限工单页面数据
+    # 获取开发权限工单页面数据列表
     def dev_work_list(self):
         nid = self.user_info['nid']
         work_list = models.Workorders.objects.filter(creator_id=nid).order_by('handle_status').only(
@@ -84,9 +87,42 @@ class GetArgvHelper(object):
                 'handler',
                 'env_label',
                 'project_name',
+                'handler_role',
         )
         return work_list
 
+    # 获取角色id
+    def get_role_id(self):
+        nid = self.user_info['nid']
+        role_id = models.User2Role.objects.filter(u_id=nid).values('r_id')
+        for i in role_id:
+            return i['r_id']
+
+    # 运维获取需要处理的数据列表
+    def ops_work_list(self):
+        work_list = models.Workorders.objects.order_by('handle_status').only(
+                'title',
+                'detail',
+                'handle_status',
+                'create_time',
+                'creator',
+                'env_label',
+                'project_name',
+        )
+        return work_list
+
+    # 测试获取需要处理的数据
+    def test_work_list(self):
+        work_list = models.Workorders.objects.filter(Q(handle_status=2) | Q(handle_status=3) | Q(handle_status=4)).order_by('handle_status').only(
+                'title',
+                'detail',
+                'handle_status',
+                'create_time',
+                'creator',
+                'env_label',
+                'project_name',
+        )
+        return work_list
 
 
 

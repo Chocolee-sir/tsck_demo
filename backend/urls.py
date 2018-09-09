@@ -39,5 +39,7 @@ urlpatterns = [
     path('get-detail.html', orderview.get_detail),
     path('del-order.html', orderview.del_order),
     path('edit-order.html', orderview.edit_order),
+    path('ops-handle-order.html', orderview.ops_handle_order),
+    path('test-handle-order.html', orderview.test_handle_order),
 
 ]
