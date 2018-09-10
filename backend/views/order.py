@@ -12,17 +12,29 @@ def index_order(request):
     request_info.auth_user()
     current_page = request.GET.get('p')
     if request_info.get_role_id() == 4:
-        all_list = request_info.dev_work_list()
+        if request.GET.get('q'):
+            all_list = request_info.dev_work_list(1)
+            list_counts = request_info.dev_work_list_count(1)
+        else:
+            all_list = request_info.dev_work_list()
+            list_counts = request_info.dev_work_list_count()
         render_url = 'backend/backend_dev_order.html'
-        list_counts = models.Workorders.objects.filter(creator_id=request_info.nid()).count()
     elif request_info.get_role_id() == 3:
-        all_list = request_info.test_work_list()
+        if request.GET.get('q'):
+            all_list = request_info.test_work_list(1)
+            list_counts = request_info.test_work_list_count(1)
+        else:
+            all_list = request_info.test_work_list()
+            list_counts = request_info.test_work_list_count()
         render_url = 'backend/backend_test_order.html'
-        list_counts = models.Workorders.objects.filter(Q(handle_status=2) | Q(handle_status=3) | Q(handle_status=4)).count()
     else:
-        all_list = request_info.ops_work_list()
+        if request.GET.get('q'):
+            all_list = request_info.ops_work_list(1)
+            list_counts = request_info.ops_work_list_count(1)
+        else:
+            all_list = request_info.ops_work_list()
+            list_counts = request_info.ops_work_list_count()
         render_url = 'backend/backend_ops_order.html'
-        list_counts = models.Workorders.objects.all().count()
     page_obj = pager.Pagination(list_counts, current_page, 5, 7, 'order.html')
     work_list = all_list[page_obj.start():page_obj.end()]
     if request_info.status:

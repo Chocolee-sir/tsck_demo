@@ -77,19 +77,41 @@ class GetArgvHelper(object):
         return pwd_md5.hexdigest()
 
     # 获取开发权限工单页面数据列表
-    def dev_work_list(self):
+    def dev_work_list(self, argv=None):
         nid = self.user_info['nid']
-        work_list = models.Workorders.objects.filter(creator_id=nid).order_by('handle_status').only(
-                'title',
-                'detail',
-                'handle_status',
-                'create_time',
-                'handler',
-                'env_label',
-                'project_name',
-                'handler_role',
-        )
+        if not argv:
+            work_list = models.Workorders.objects.filter(creator_id=nid).order_by('handle_status').only(
+                    'title',
+                    'detail',
+                    'handle_status',
+                    'create_time',
+                    'handler',
+                    'env_label',
+                    'project_name',
+                    'handler_role',
+            )
+        else:
+            work_list = models.Workorders.objects.filter(creator_id=nid, title__icontains=self.request.GET.get('q')).order_by('handle_status').only(
+                    'title',
+                    'detail',
+                    'handle_status',
+                    'create_time',
+                    'handler',
+                    'env_label',
+                    'project_name',
+                    'handler_role',
+            )
         return work_list
+
+
+    # 获取开发工单总数
+    def dev_work_list_count(self, argv=None):
+        if not argv:
+            list_counts = models.Workorders.objects.filter(creator_id=self.nid()).count()
+        else:
+            list_counts = models.Workorders.objects.filter(creator_id=self.nid(), title__icontains=self.request.GET.get('q')).count()
+        return list_counts
+
 
     # 获取角色id
     def get_role_id(self):
@@ -98,33 +120,76 @@ class GetArgvHelper(object):
         for i in role_id:
             return i['r_id']
 
+
     # 运维获取需要处理的数据列表
-    def ops_work_list(self):
-        work_list = models.Workorders.objects.order_by('handle_status').only(
-                'title',
-                'detail',
-                'handle_status',
-                'create_time',
-                'creator',
-                'env_label',
-                'project_name',
-        )
+    def ops_work_list(self, argv=None):
+        if not argv:
+            work_list = models.Workorders.objects.order_by('handle_status').only(
+                    'title',
+                    'detail',
+                    'handle_status',
+                    'create_time',
+                    'creator',
+                    'env_label',
+                    'project_name',
+            )
+        else:
+            work_list = models.Workorders.objects.filter(title__icontains=self.request.GET.get('q')).order_by('handle_status').only(
+                    'title',
+                    'detail',
+                    'handle_status',
+                    'create_time',
+                    'creator',
+                    'env_label',
+                    'project_name',
+            )
         return work_list
+
+
+    # 获取运维工单总数
+    def ops_work_list_count(self, argv=None):
+        if not argv:
+            list_counts = models.Workorders.objects.all().count()
+        else:
+            list_counts = models.Workorders.objects.filter(title__icontains=self.request.GET.get('q')).count()
+        return list_counts
+
 
     # 测试获取需要处理的数据
-    def test_work_list(self):
-        work_list = models.Workorders.objects.filter(Q(handle_status=2) | Q(handle_status=3) | Q(handle_status=4)).order_by('handle_status').only(
-                'title',
-                'detail',
-                'handle_status',
-                'create_time',
-                'creator',
-                'env_label',
-                'project_name',
-        )
+    def test_work_list(self, argv=None):
+        if not argv:
+            work_list = models.Workorders.objects.filter(Q(handle_status=2) | Q(handle_status=3) | Q(handle_status=4)).order_by('handle_status').only(
+                    'title',
+                    'detail',
+                    'handle_status',
+                    'create_time',
+                    'creator',
+                    'env_label',
+                    'project_name',
+            )
+        else:
+            work_list = models.Workorders.objects.filter\
+                (Q(handle_status=2) | Q(handle_status=3) | Q(handle_status=4), title__icontains=self.request.GET.get('q')).\
+                order_by('handle_status').only(
+                    'title',
+                    'detail',
+                    'handle_status',
+                    'create_time',
+                    'creator',
+                    'env_label',
+                    'project_name',
+            )
         return work_list
 
 
+    # 获取测试工单总数
+    def test_work_list_count(self, argv=None):
+        if not argv:
+            list_counts = models.Workorders.objects.filter(Q(handle_status=2) | Q(handle_status=3) | Q(handle_status=4)).count()
+        else:
+            list_counts = models.Workorders.objects.filter\
+                (Q(handle_status=2) | Q(handle_status=3) | Q(handle_status=4), title__icontains=self.request.GET.get('q')).count()
+        return list_counts
 
 
 
