@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 
+######################用户管理########################
 class User(models.Model):
     """用户表"""
     username = models.CharField(max_length=32, unique=True)
@@ -88,6 +89,7 @@ class Permission2Role(models.Model):
         return "%s==>%s" %(self.r.caption, self.p,)
 
 
+######################工单管理########################
 class Projects(models.Model):
     """项目列表，比如招行项目，兴业项目"""
     project_name = models.CharField(max_length=32, unique=True)
@@ -150,4 +152,40 @@ class Workorders(models.Model):
         return "%s" % (self.title,)
 
 
+######################资产管理########################
+class IDC(models.Model):
+    """机房信息"""
+    name = models.CharField(max_length=64, unique=True)
+
+    class Meta:
+        verbose_name_plural = 'IDC机房'
+
+    def __str__(self):
+        return "%s" % (self.name,)
+
+
+class Host(models.Model):
+    """存储主机列表"""
+    hostname = models.CharField(max_length=64,unique=True)
+    ip_address = models.GenericIPAddressField(unique=True)
+    port = models.SmallIntegerField(default=22)
+    idc = models.ForeignKey("IDC", on_delete=models.CASCADE)
+    assets_type_choices = (
+        (1, '虚拟机'),
+        (2, '交换机'),
+        (3, '服务器'),
+        (4, '防火墙'),
+    )
+    assets_type = models.SmallIntegerField(choices=assets_type_choices, default=1)
+    project_name = models.ForeignKey("Projects", on_delete=models.CASCADE)
+    env_type = models.ForeignKey("Envlists", on_delete=models.CASCADE)
+    cpu = models.CharField(max_length=32)
+    disk = models.CharField(max_length=32)
+    memory = models.CharField(max_length=32)
+
+    def __str__(self):
+        return self.hostname
+
+    class Meta:
+        verbose_name_plural = '主机列表'
 

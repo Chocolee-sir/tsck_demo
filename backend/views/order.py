@@ -37,7 +37,7 @@ def index_order(request):
         render_url = 'backend/backend_ops_order.html'
     page_obj = pager.Pagination(list_counts, current_page, 5, 7, 'order.html')
     work_list = all_list[page_obj.start():page_obj.end()]
-    if request_info.status:
+    if request_info.status():
         return render(
                 request, render_url,
                 {
@@ -59,7 +59,7 @@ def create_order(request):
     request_info = GetArgvHelper(request)
     request_info.auth_user()
     response = {'status': True, 'message': None}
-    if request_info.status:
+    if request_info.status():
         if request.method == "POST":
             title = request.POST.get('title')
             detail = request.POST.get('detail')
@@ -100,7 +100,7 @@ def get_detail(request):
         'ops_result': None,
         'test_result': None
     }
-    if request_info.status:
+    if request_info.status():
         if request.method == "GET":
             nid = request.GET.get('nid')
             role = request.GET.get('role')
@@ -123,7 +123,7 @@ def del_order(request):
     request_info = GetArgvHelper(request)
     request_info.auth_user()
     response = {'status': True, 'data': None}
-    if request_info.status:
+    if request_info.status():
         if request.method == "GET":
             nid = request.GET.get('nid')
             try:
@@ -141,7 +141,7 @@ def edit_order(request):
     request_info = GetArgvHelper(request)
     request_info.auth_user()
     response = {'status': True, 'data': None}
-    if request_info.status:
+    if request_info.status():
         if request.method == "POST":
             nid = request.POST.get('nid')
             title = request.POST.get('title')
@@ -169,7 +169,7 @@ def ops_handle_order(request):
     request_info = GetArgvHelper(request)
     request_info.auth_user()
     response = {'status': True, 'message': None}
-    if request_info.status:
+    if request_info.status():
         if request.method == "POST":
             nid = request.POST.get('nid')
             result = request.POST.get('result')
@@ -198,7 +198,7 @@ def test_handle_order(request):
     request_info = GetArgvHelper(request)
     request_info.auth_user()
     response = {'status': True, 'message': None}
-    if request_info.status:
+    if request_info.status():
         if request.method == "POST":
             nid = request.POST.get('nid')
             result = request.POST.get('result')

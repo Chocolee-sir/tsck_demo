@@ -22,6 +22,7 @@ from django.urls import path
 from backend.views import login as loginview
 from backend.views import user as userview
 from backend.views import order as orderview
+from backend.views import assets as assetsview
 
 urlpatterns = [
     path('index.html', loginview.index),
@@ -41,5 +42,8 @@ urlpatterns = [
     path('edit-order.html', orderview.edit_order),
     path('ops-handle-order.html', orderview.ops_handle_order),
     path('test-handle-order.html', orderview.test_handle_order),
+
+    path('assets.html', assetsview.AssetsView.as_view()),
+    path('assets-json.html', assetsview.AssetsJsonView.as_view()),
 
 ]

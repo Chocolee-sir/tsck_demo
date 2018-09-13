@@ -1,0 +1,46 @@
+{% extends 'backend/backend_index.html' %}
+
+{% block pro_name %}{{ menu_info.0 }}{% endblock %}
+
+{% block pro_in_name %}{{ menu_info.0 }}{% endblock %}
+
+{% block icon_name %}{{ menu_info.1 }}{% endblock %}
+
+{% block icon_in_name %}{{ menu_info.1 }}{% endblock %}
+
+{% block this_url %}{{ menu_info.2 }}{% endblock %}
+
+
+
+{% block page_body %}
+
+    <div class="panel-body">
+
+{#        <a class="btn btn-primary right" href="#" role="button">添加</a>#}
+
+
+        <table class="table table-bordered" id="assetsInfoId">
+            <thead id="table_th">
+            </thead>
+
+            <tbody id="table_tb">
+            </tbody>
+        </table>
+
+        <div class="dataTables_paginate paging_bs_full">
+            <ul class="pagination left small" style="margin-top: 0">
+                {{ page_obj.page_str|safe }}
+            </ul>
+        </div>
+
+
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
