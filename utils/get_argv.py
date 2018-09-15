@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 __author__ = 'Chocolee'
 
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from repository import models
 import hashlib
 from django.db.models import Q
+from utils import pager
+from utils import forms_plugin
+
 import time
 
 
@@ -75,6 +78,16 @@ class GetArgvHelper(object):
         pwd_md5 = hashlib.md5()
         pwd_md5.update(password.encode(encoding='utf-8'))
         return pwd_md5.hexdigest()
+
+    # 基础render数据
+    def base_render_argv(self):
+        ret = {
+            'username': self.username(),
+            'permission_list': self.permission_list(),
+            'personal_info': self.personal_info(),
+            'menu_info': self.menu_info()
+        }
+        return ret
 
     # 获取开发权限工单页面数据列表
     def dev_work_list(self, argv=None):
@@ -192,5 +205,58 @@ class GetArgvHelper(object):
         return list_counts
 
 
+# 资产页方法使用
+class AssetsGetArgv(GetArgvHelper):
 
+     # 资产管理分页使用
+    def get_host_paper(self):
+        if not self.request.GET.get('q'):
+            data_list_all = models.Host.objects.all().order_by('-id')
+            list_counts = models.Host.objects.all().count()
+        else:
+            data_list_all = models.Host.objects.filter(Q(ip_address__icontains=self.request.GET.get('q')) | Q(project_name__project_name__icontains=self.request.GET.get('q'))).order_by('-id')
+            list_counts = models.Host.objects.filter(Q(ip_address__icontains=self.request.GET.get('q')) | Q(project_name__project_name__icontains=self.request.GET.get('q'))).count()
+        current_page = self.request.GET.get('p')
+        page_obj = pager.Pagination(list_counts, current_page, 5, 7, 'assets.html')
+        data_list = data_list_all[page_obj.start():page_obj.end()]
+        return {'page_obj': page_obj, 'data_list': data_list}
+
+    # 添加主机资产
+    def forms_add_asset(self):
+        ret = forms_plugin.FormsAddAsset()
+        return ret
+
+    # 编辑主机资产
+    def forms_edit_asset(self, nid):
+        obj = models.Host.objects.filter(id=nid).values()
+        ret = forms_plugin.FormsAddAsset(obj[0])
+        return ret
+
+    #获取主机资产储存到数据库
+    def forms_add_asset_to_db(self):
+        forms_add_asset = forms_plugin.FormsAddAsset(self.request.POST)
+        if forms_add_asset.is_valid():
+            asset_dict = forms_add_asset.cleaned_data
+            models.Host.objects.create(**asset_dict)
+            return True
+        else:
+            return forms_add_asset
+
+    # 编辑主机资产
+    def forms_edit_asset_to_db(self, nid):
+        forms_edit_asset = forms_plugin.FormsAddAsset(self.request.POST)
+        if forms_edit_asset.is_valid():
+            asset_dict = forms_edit_asset.cleaned_data
+            models.Host.objects.filter(id=nid).update(**asset_dict)
+            return True
+        else:
+            return forms_edit_asset
+
+    # 删除一条主机资产
+    def del_asset(self, nid):
+        try:
+            models.Host.objects.filter(id=nid).delete()
+            return True
+        except Exception as e:
+            return e
 

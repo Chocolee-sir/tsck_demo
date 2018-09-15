@@ -1,0 +1,96 @@
+{% extends 'backend/backend_index.html' %}
+
+{% block pro_name %}资产管理{% endblock %}
+
+{% block pro_in_name %}资产管理{% endblock %}
+
+{% block icon_name %}im-paragraph-justify{% endblock %}
+
+{% block icon_in_name %}im-paragraph-justify{% endblock %}
+
+{% block this_url %}assets.html{% endblock %}
+
+{% block this_in_head_title %}
+    <li>
+        <i class="en-arrow-right7"></i>
+        <i class="{{ menu_info.1 }}"></i>
+        <a href="{{ menu_info.2 }}">{{ menu_info.0 }}</a>
+    </li>
+{% endblock %}
+
+
+{% block page_body %}
+
+    <div class="panel panel-default toggle col-md-12">
+        <!-- Start .panel -->
+        <div class="panel-heading">
+            <h3 class="panel-title">添加主机栏</h3>
+        </div>
+        <div class="panel-body">
+            <form  action="add-assets.html" method="POST"  novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="hostname">主机名</label>
+                    {{ forms_add_asset.hostname }} <p style="color: red">{{ forms_add_asset.errors.hostname.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="ip_address">IP地址</label>
+                    {{ forms_add_asset.ip_address }} <p style="color: red">{{ forms_add_asset.errors.ip_address.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="port">端口</label>
+                    {{ forms_add_asset.port }} <p style="color: red">{{ forms_add_asset.errors.port.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="idc_id">IDC机房</label>
+                    {{ forms_add_asset.idc_id }}
+                </div>
+
+                <div class="form-group">
+                    <label for="assets_type" class="control-label">资产类型</label>
+                    <div class="col-lg-1">
+                        {{ forms_add_asset.assets_type }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="project_name_id">所属项目</label>
+                    {{ forms_add_asset.project_name_id }}
+                </div>
+
+                <div class="form-group">
+                    <label for="env_type_id">所属环境</label>
+                    {{ forms_add_asset.env_type_id }}
+                </div>
+
+                <div class="form-group">
+                    <label for="cpu">CPU</label>
+                    {{ forms_add_asset.cpu }} <p style="color: red">{{ forms_add_asset.errors.cpu.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="memory">内存</label>
+                    {{ forms_add_asset.memory }} <p style="color: red">{{ forms_add_asset.errors.memory.0 }}<p>
+                </div>
+
+                <div class="form-group">
+                    <label for="disk">硬盘</label>
+                    {{ forms_add_asset.disk }} <p style="color: red">{{ forms_add_asset.errors.disk.0 }}<p>
+                </div>
+
+                <button type="submit" class="btn btn-info">提交</button>
+
+            </form>
+        </div>
+    </div>
+    <!-- End .panel -->
+
+
+
+
+
+
+{% endblock %}

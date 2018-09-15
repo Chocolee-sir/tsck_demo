@@ -45,14 +45,15 @@ function initHeader(table_config) {
 
 
 function initBody(table_config, data_list) {
-    $.each(data_list, function (k, row) {
+    $('#table_tb').empty();
+    for (var i = 0; i < data_list.length; i++) {
+        var row = data_list[i];
         // row = {'cabinet_num': '12B', 'cabinet_order': '1', 'id': 1},
         var tr = document.createElement('tr');
-
+        tr.setAttribute('row-id', row['id']);
         $.each(table_config, function (i, colConfig) {
             if (colConfig.display) {
                 var td = document.createElement('td');
-
                 /* 生成文本信息 */
                 var kwargs = {};
                 $.each(colConfig.text.kwargs, function (key, value) {
@@ -72,9 +73,14 @@ function initBody(table_config, data_list) {
                 var temp = colConfig.text.content.format(kwargs);
                 td.innerHTML = temp;
 
+
                 /* 属性colConfig.attrs = {'edit-enable': 'true','edit-type': 'select'}  */
                 $.each(colConfig.attrs, function (kk, vv) {
-                    td.setAttribute(kk, vv);
+                    if (vv[0] == '@') {
+                        td.setAttribute(kk, row[vv.substring(1, vv.length)]);
+                    } else {
+                        td.setAttribute(kk, vv);
+                    }
                 });
 
                 $(tr).append(td);
@@ -82,8 +88,7 @@ function initBody(table_config, data_list) {
         });
 
         $('#table_tb').append(tr);
-    });
-
+    }
 
 }
 

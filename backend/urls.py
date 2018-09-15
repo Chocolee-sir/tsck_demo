@@ -43,7 +43,9 @@ urlpatterns = [
     path('ops-handle-order.html', orderview.ops_handle_order),
     path('test-handle-order.html', orderview.test_handle_order),
 
+    # path('assets-json.html', assetsview.AssetsJsonView.as_view()),
     path('assets.html', assetsview.AssetsView.as_view()),
-    path('assets-json.html', assetsview.AssetsJsonView.as_view()),
+    path('add-assets.html', assetsview.AssetsAddView.as_view()),
+    path('edit-assets.html', assetsview.AssetsEditView.as_view()),
 
 ]

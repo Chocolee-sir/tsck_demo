@@ -15,7 +15,7 @@ class FormsAddUser(forms.Form):
         widget=widgets.TextInput(attrs={
             'class': 'form-control',
             'name': 'username',
-            'placeholder': '姓名'}
+            'placeholder': '用户名'}
         ),
         max_length=18,
         min_length=3,
@@ -133,4 +133,152 @@ class FormsAddUser(forms.Form):
             raise ValidationError('整体错误信息')
         return self.cleaned_data
 
+
+class FormsAddAsset(forms.Form):
+
+    hostname = fields.CharField(
+        widget=widgets.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'hostname',
+            'placeholder': '主机名'}
+        ),
+        max_length=25,
+        min_length=3,
+        required=True,
+        error_messages={
+            'required': '主机名不能为空',
+            'max_length': '主机名太长了，不能超过25个字符',
+            'min_length': '主机名太短了，最少5个字符',
+            'invalid': '输入的参数不合法'
+        }
+    )
+
+    ip_address = fields.CharField(
+        widget=widgets.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'ip_address',
+            'placeholder': 'IP地址'}
+        ),
+        max_length=16,
+        min_length=7,
+        required=True,
+        error_messages={
+            'required': 'IP地址不能为空',
+            'max_length': 'IP地址太长了，不能超过16位',
+            'min_length': 'IP地址太短了，最少7位以上',
+            'invalid': '输入的参数不合法'
+        }
+    )
+
+    port = fields.IntegerField(
+        widget=widgets.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'port',
+            'placeholder': '端口',
+            'value': '22'
+            }
+        ),
+        max_value=65535,
+        min_value=10,
+        required=True,
+        error_messages={
+            'required': '端口不能为空',
+            'max_value': '端口太大了，不能超过65535',
+            'min_value': '端口太小了，最少为10以上',
+            'invalid': '输入的参数不合法'
+        }
+    )
+
+    idc_id = fields.IntegerField(
+                widget=widgets.Select(attrs={
+                    'class': 'form-control',
+                    'name': 'idc_id'
+                })
+            )
+
+    assets_type = fields.ChoiceField(
+        choices=((1, '虚拟机'), (2, '交换机'), (3, '服务器'), (4, '防火墙'),),
+        initial=1,
+        widget=widgets.RadioSelect(attrs={
+            'name': 'assets_type',
+            'class': 'radio-inline'
+        })
+    )
+
+    project_name_id = fields.IntegerField(
+                widget=widgets.Select(attrs={
+                    'class': 'form-control',
+                    'name': 'project_name_id'
+                })
+            )
+
+    env_type_id = fields.IntegerField(
+                widget=widgets.Select(attrs={
+                    'class': 'form-control',
+                    'name': 'env_type_id'
+                })
+            )
+
+    cpu = fields.CharField(
+        widget=widgets.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'cpu',
+            'placeholder': 'cpu'}
+        ),
+        max_length=5,
+        min_length=2,
+        required=True,
+        error_messages={
+            'required': 'cpu不能为空',
+            'max_length': 'cpu太长了，不能超过5个字符',
+            'min_length': 'cpu太短了，最少2个字符',
+            'invalid': '输入的参数不合法'
+        }
+    )
+
+    memory = fields.CharField(
+        widget=widgets.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'memory',
+            'placeholder': '内存'}
+        ),
+        max_length=6,
+        min_length=2,
+        required=True,
+        error_messages={
+            'required': '内存不能为空',
+            'max_length': '内存太长了，不能超过6个字符',
+            'min_length': '内存太短了，最少2个字符',
+            'invalid': '输入的参数不合法'
+        }
+    )
+
+    disk = fields.CharField(
+        widget=widgets.TextInput(attrs={
+            'class': 'form-control',
+            'name': 'disk',
+            'placeholder': '硬盘'}
+        ),
+        max_length=6,
+        min_length=2,
+        required=True,
+        error_messages={
+            'required': '硬盘不能为空',
+            'max_length': '硬盘太长了，不能超过6个字符',
+            'min_length': '硬盘太短了，最少2个字符',
+            'invalid': '硬盘的参数不合法'
+        }
+    )
+
+    # def clean_hostname(self):
+    #     v = self.cleaned_data['hostname']
+    #     if models.Host.objects.filter(hostname=v).count():
+    #         raise ValidationError('主机名已存在')
+    #     return v
+
+    def __init__(self, *args, **kwargs):
+        super(FormsAddAsset, self).__init__(*args, **kwargs)
+        self.fields['idc_id'].widget.choices = models.IDC.objects.values_list('id', 'name')
+        self.fields['project_name_id'].widget.choices = models.Projects.objects.values_list('id', 'project_name')
+        self.fields['env_type_id'].widget.choices = models.Envlists.objects.values_list('id', 'env')
 

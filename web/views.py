@@ -34,3 +34,7 @@ def login(request):
             return render(request, 'web/login.html', {'msg': "用户名或密码错误"})
     else:
         return render(request, 'web/login.html')
+
+
+def test(request):
+    return render(request,'web/11.html')

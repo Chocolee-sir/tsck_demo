@@ -169,7 +169,7 @@ class Host(models.Model):
     hostname = models.CharField(max_length=64,unique=True)
     ip_address = models.GenericIPAddressField(unique=True)
     port = models.SmallIntegerField(default=22)
-    idc = models.ForeignKey("IDC", on_delete=models.CASCADE)
+    idc = models.ForeignKey("IDC", on_delete=models.CASCADE, blank=True, null=True)
     assets_type_choices = (
         (1, '虚拟机'),
         (2, '交换机'),
@@ -177,8 +177,8 @@ class Host(models.Model):
         (4, '防火墙'),
     )
     assets_type = models.SmallIntegerField(choices=assets_type_choices, default=1)
-    project_name = models.ForeignKey("Projects", on_delete=models.CASCADE)
-    env_type = models.ForeignKey("Envlists", on_delete=models.CASCADE)
+    project_name = models.ForeignKey("Projects", on_delete=models.CASCADE, blank=True, null=True)
+    env_type = models.ForeignKey("Envlists", on_delete=models.CASCADE, blank=True, null=True)
     cpu = models.CharField(max_length=32)
     disk = models.CharField(max_length=32)
     memory = models.CharField(max_length=32)

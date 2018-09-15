@@ -4,104 +4,118 @@ __author__ = 'Chocolee'
 from backend.views.login import *
 from utils.get_argv import *
 from django.views import View
-from utils import pager
+
 
 
 class AssetsView(View):
 
     def get(self, request, *args, **kwargs):
-        request_info = GetArgvHelper(request)
+        request_info = AssetsGetArgv(request)
         request_info.auth_user()
         if request_info.status():
+            render_argv = request_info.base_render_argv()
+            render_argv['page_obj'] = request_info.get_host_paper()['page_obj']
+            render_argv['data_list'] = request_info.get_host_paper()['data_list']
             return render(
-                request, 'backend/backend_assets.html',
-                {
-                    'username': request_info.username,
-                    'permission_list': request_info.permission_list,
-                    'personal_info': request_info.personal_info,
-                    'menu_info': request_info.menu_info,
-                })
+                request, 'backend/backend_assets.html', render_argv)
         else:
             return redirect('/backend/403.html')
 
 
-class AssetsJsonView(View):
+class AssetsAddView(View):
 
     def get(self, request, *args, **kwargs):
+        request_info = AssetsGetArgv(request)
+        request_info.auth_user()
+        if request_info.status():
+            render_argv = request_info.base_render_argv()
+            render_argv['forms_add_asset'] = request_info.forms_add_asset
+            return render(request, 'backend/backend_add_assets.html', render_argv)
+        else:
+            return redirect('/backend/403.html')
 
-        table_config = [
-
-            {
-                'q': 'id',
-                'title': 'ID',
-                'display': False,
-                'text': {},
-                'attrs': {}
-            },
-
-            {
-                'q': 'ip_address',
-                'title': 'IP地址',
-                'display': True,
-                'text': {'content': "{n}", 'kwargs': {'n': "@ip_address"}},
-                'attrs': {}
-            },
-
-            {
-                'q': 'assets_type',
-                'title': '资产类型',
-                'display': True,
-                'text': {'content': "{n}", 'kwargs': {'n': "@@assets_type_choices"}},
-                'attrs': {'edit-enable': 'true', 'edit-type': 'select'}
-            },
-
-            {
-                'q': 'disk',
-                'title': '硬盘',
-                'display': True,
-                'text': {'content': "{n}", 'kwargs': {'n': "@disk"}},
-                'attrs': {}
-            },
-
-            {
-                'q': 'idc__name',
-                'title': 'IDC机房',
-                'display': True,
-                'text': {'content': "{n}", 'kwargs': {'n': "@idc__name"}},
-                'attrs': {'edit-enable': 'true', 'edit-type': 'select'}
-            },
+    def post(self, request, *args, **kwargs):
+        request_info = AssetsGetArgv(request)
+        request_info.auth_user()
+        if request_info.status():
+            if request_info.forms_add_asset_to_db() is True:
+                return redirect('/backend/assets.html')
+            else:
+                render_argv = request_info.base_render_argv()
+                render_argv['forms_add_asset'] = request_info.forms_add_asset_to_db()
+                return render(request, 'backend/backend_add_assets.html', render_argv)
+        else:
+            return redirect('/backend/403.html')
 
 
+class AssetsEditView(View):
 
-            {
-                'q': None,
-                'title': '操作',
-                'display': True,
-                'text': {'content': "<a class='btn btn-dark btn-xs web-ssh' href='#'>{n}</a>", 'kwargs': {'n': '连接'}},
-                'attrs': {},
-            },
+    def get(self, request, *args, **kwargs):
+        request_info = AssetsGetArgv(request)
+        request_info.auth_user()
+        nid = request.GET.get('nid')
+        action = request.GET.get('Action')
+        if request_info.status():
+            if action == "编辑":
+                forms_edit_asset = request_info.forms_edit_asset(nid)
+                render_argv = request_info.base_render_argv()
+                render_argv['forms_edit_asset'] = forms_edit_asset
+                render_argv['nid'] = nid
+                return render(request, 'backend/backend_edit_assets.html', render_argv)
+            elif action == "连接":
+                return redirect('/backend/assets.html')
+            else:
+                return redirect('/backend/assets.html')
+        else:
+            return redirect('/backend/403.html')
+
+    def post(self, request, *args, **kwargs):
+        request_info = AssetsGetArgv(request)
+        request_info.auth_user()
+        nid = request.POST.get('nid')
+        action = request.POST.get('Action')
+        if request_info.status():
+            if action == "提交":
+                if request_info.forms_edit_asset_to_db(nid) is True:
+                    return redirect('/backend/assets.html')
+                else:
+                    render_argv = request_info.base_render_argv()
+                    render_argv['forms_edit_asset'] = request_info.forms_edit_asset_to_db(nid)
+                    return render(request, 'backend/backend_edit_assets.html', render_argv)
+            elif action == "删除这条记录":
+                result = request_info.del_asset(nid)
+                if result:
+                    return redirect('/backend/assets.html')
+                else:
+                    return HttpResponse(result)
+            else:
+                pass
+        else:
+            return redirect('/backend/403.html')
 
 
 
-        ]
 
-        q_list = []
-        for i in table_config:
-            if not i['q']:
-                continue
-            q_list.append(i['q'])
 
-        data_list = models.Host.objects.all().values(*q_list)
-
-        result = {
-            'table_config': table_config,
-            'data_list': list(data_list),
-            'global_dict': {
-                'assets_type_choices': models.Host.assets_type_choices,
-            }
-        }
-
-        return HttpResponse(json.dumps(result))
+# class AssetsJsonView(View):
+#
+#     def get(self, request, *args, **kwargs):
+#         request_info = GetArgvHelper(request)
+#         request_info.auth_user()
+#
+#         if request_info.status():
+#             data_list = data_list_all()
+#
+#             result = {
+#                 'table_config': table_config,
+#                 'data_list': list(data_list),
+#                 'global_dict': {
+#                     'assets_type_choices': models.Host.assets_type_choices,
+#                 }
+#             }
+#             return HttpResponse(json.dumps(result))
+#         else:
+#             return redirect('/backend/403.html')
 
 
 

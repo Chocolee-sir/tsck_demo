@@ -16,14 +16,63 @@
 
     <div class="panel-body">
 
-{#        <a class="btn btn-primary right" href="#" role="button">添加</a>#}
+        <a class="btn btn-primary right" href="add-assets.html" role="button" style="margin-bottom: 10px">新建主机</a>
+
+        <div style="display: inline-block; float: right" class="dataTables_filter" id="datatable1_filter">
+            <form method="get" action="assets.html">
+                {% csrf_token %}
+                <label>
+                    <div style="display: inline-block; float: left;margin-right: 5px">
+                        <input type="search" class="form-control input-large" name="q" placeholder="支持IP地址及项目" aria-controls="datatable1">
+                    </div>
+                    <div style="display: inline-block; float: right">
+                        <button type="submit" class="btn btn-default" >搜索</button>
+                    </div>
+                </label>
+            </form>
+        </div>
 
 
         <table class="table table-bordered" id="assetsInfoId">
             <thead id="table_th">
+                <tr>
+                    <th>IP地址</th>
+                    <th>资产类型</th>
+                    <th><a href="#">所属项目</a></th>
+                    <th><a href="#">所属环境</a></th>
+                    <th>CPU</th>
+                    <th>内存</th>
+                    <th>硬盘</th>
+                    <th><a href="#">IDC机房</a></th>
+                    <th>操作</th>
+                </tr>
             </thead>
 
             <tbody id="table_tb">
+
+            {% for row in data_list %}
+                <tr nid="{{ row.id }}">
+                    <td>{{ row.ip_address}}</td>
+                    <td>{{ row.get_assets_type_display }}</td>
+                    <td>{{ row.project_name.project_name }}</td>
+                    <td>{{ row.env_type.env }}</td>
+                    <td>{{ row.cpu }}</td>
+                    <td>{{ row.memory }}</td>
+                    <td>{{ row.disk }}</td>
+                    <td>{{ row.idc.name }}</td>
+                    <td>
+                        <form  action="edit-assets.html" method="GET"  novalidate>
+                            <input name="nid" style="display: none" value="{{ row.id }}">
+                            <input Type="Submit" class="btn btn-primary btn-xs assets-edit-row" name="Action" value="编辑">
+                            |
+                            <input Type="Submit" class="btn btn-dark btn-xs web-ssh" name="Action" value="连接">
+
+                        </form>
+
+                    </td>
+                </tr>
+            {% endfor %}
+
             </tbody>
         </table>
 

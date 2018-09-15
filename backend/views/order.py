@@ -75,11 +75,11 @@ def create_order(request):
             env_label = request.POST.get('env_label')
             try:
                 models.Workorders.objects.create(
-                    title=title,
-                    detail=detail,
-                    project_name_id=project_name,
-                    env_label_id=env_label,
-                    creator_id=request_info.nid(),
+                        title=title,
+                        detail=detail,
+                        project_name_id=project_name,
+                        env_label_id=env_label,
+                        creator_id=request_info.nid(),
                 )
             except Exception as e:
                 response['status'] = False
@@ -93,6 +93,7 @@ def create_order(request):
 def get_detail(request):
     request_info = GetArgvHelper(request)
     request_info.auth_user()
+    print(request.path,request_info.status())
     response = {
         'status': True,
         'title': None,
@@ -122,6 +123,7 @@ def get_detail(request):
 def del_order(request):
     request_info = GetArgvHelper(request)
     request_info.auth_user()
+
     response = {'status': True, 'data': None}
     if request_info.status():
         if request.method == "GET":
@@ -150,10 +152,10 @@ def edit_order(request):
             env_label_id = request.POST.get('env_label')
             try:
                 models.Workorders.objects.filter(id=nid, creator_id=request_info.nid()).update(
-                    title=title,
-                    detail=detail,
-                    project_name_id=project_name_id,
-                    env_label_id=env_label_id,
+                        title=title,
+                        detail=detail,
+                        project_name_id=project_name_id,
+                        env_label_id=env_label_id,
                 )
             except Exception as e:
                 response['status'] = False
@@ -179,12 +181,12 @@ def ops_handle_order(request):
 
             try:
                 models.Workorders.objects.filter(id=nid).update(
-                    handler_role=2,
-                    handle_status=2,
-                    handler_id=request_info.nid(),
-                    role_status=2,
-                    ops_result=result,
-                    handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                        handler_role=2,
+                        handle_status=2,
+                        handler_id=request_info.nid(),
+                        role_status=2,
+                        ops_result=result,
+                        handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                 )
             except Exception as e:
                 response['status'] = False
@@ -206,25 +208,25 @@ def test_handle_order(request):
             if not result:
                 response['status'] = False
                 response['message'] = "内容不能为空"
-            print(nid,result,last_result)
+            print(nid, result, last_result)
             try:
                 if int(last_result) == 1:
                     models.Workorders.objects.filter(id=nid).update(
-                        handler_role=4,
-                        handle_status=3,
-                        handler_id=request_info.nid(),
-                        role_status=3,
-                        test_result=result,
-                        handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                            handler_role=4,
+                            handle_status=3,
+                            handler_id=request_info.nid(),
+                            role_status=3,
+                            test_result=result,
+                            handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                     )
                 else:
                     models.Workorders.objects.filter(id=nid).update(
-                        handler_role=3,
-                        handle_status=4,
-                        handler_id=request_info.nid(),
-                        role_status=3,
-                        test_result=result,
-                        handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                            handler_role=3,
+                            handle_status=4,
+                            handler_id=request_info.nid(),
+                            role_status=3,
+                            test_result=result,
+                            handle_time=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
                     )
 
             except Exception as e:
