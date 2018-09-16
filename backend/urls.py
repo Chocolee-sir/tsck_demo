@@ -47,5 +47,6 @@ urlpatterns = [
     path('assets.html', assetsview.AssetsView.as_view()),
     path('add-assets.html', assetsview.AssetsAddView.as_view()),
     path('edit-assets.html', assetsview.AssetsEditView.as_view()),
+    path('gateone-auth.html', assetsview.AssetsGateOneAuthView.as_view()),
 
 ]

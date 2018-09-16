@@ -36,5 +36,3 @@ def login(request):
         return render(request, 'web/login.html')
 
 
-def test(request):
-    return render(request,'web/11.html')

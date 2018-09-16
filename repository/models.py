@@ -189,3 +189,34 @@ class Host(models.Model):
     class Meta:
         verbose_name_plural = '主机列表'
 
+
+class RemoteUser(models.Model):
+    """存储远程要管理的主机的账号信息"""
+    auth_type_choices = ((0, 'ssh-password'), (1, 'ssh-key'))
+    auth_type = models.SmallIntegerField(choices=auth_type_choices, default=0)
+    username = models.CharField(max_length=32)
+    password = models.CharField(max_length=64, blank=True, null=True)
+
+    class Meta:
+        unique_together = ('auth_type', 'username', 'password')
+        verbose_name_plural = '远程主机账号密码表'
+
+    def __str__(self):
+        return "%s:%s" %(self.username, self.password)
+
+
+class HostToRemoteUser(models.Model):
+    """绑定主机和远程用户的对应关系"""
+    host = models.ForeignKey("Host", on_delete=models.CASCADE)
+    remote_user = models.ForeignKey("RemoteUser", on_delete=models.CASCADE)
+    role = models.ForeignKey("Role", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("host", "remote_user")
+        verbose_name_plural = '主机对应远程账号密码表'
+
+    def __str__(self):
+        return "%s %s"%(self.host, self.remote_user)
+
+
+

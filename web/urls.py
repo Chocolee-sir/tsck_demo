@@ -23,5 +23,4 @@ from backend import views  as vbackend
 
 urlpatterns = [
     path('login.html', vweb.login),
-    path('test.html', vweb.test),
 ]

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 __author__ = 'Chocolee'
 
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from repository import models
-import hashlib
 from django.db.models import Q
 from utils import pager
 from utils import forms_plugin
+import time, hmac, hashlib
 
 import time
 
@@ -260,3 +260,9 @@ class AssetsGetArgv(GetArgvHelper):
         except Exception as e:
             return e
 
+    # gateone webssh 加密使用
+    def create_signature(self, secret, *parts):
+        hash = hmac.new(bytes(secret, 'utf8'), digestmod=hashlib.sha1)
+        for part in parts:
+            hash.update(str(part).encode('utf8'))
+        return hash.hexdigest()
