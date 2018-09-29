@@ -210,7 +210,8 @@
                         <div class="form-group">
                             <label for="detail" class="col-sm-2 control-label">变更内容</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" name="detail" id="orderTextArea" rows="5" placeholder="请输入内容"></textarea>
+                                <textarea class="form-control" name="detail" id="orderTextArea" rows="5"
+                                          placeholder="请输入内容"></textarea>
                             </div>
                         </div>
 
@@ -264,10 +265,10 @@
                     <div id="deleteOrderText"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"  id="deleteOrderCancelId">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="deleteOrderCancelId">
                         取消
                     </button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="deleteOrderSureId" >
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="deleteOrderSureId">
                         确定
                     </button>
                 </div>
@@ -299,7 +300,7 @@
                         <div class="form-group">
                             <label for="detail" class="col-sm-2 control-label">变更内容</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" name="detail"  rows="5"></textarea>
+                                <textarea class="form-control" name="detail" rows="5"></textarea>
                             </div>
                         </div>
 
@@ -442,3 +443,88 @@
 
 
 
+
+
+
+
+{% block page_body %}
+
+    <div class="outlet" style="width: 1020px;height: auto; margin-left: 15px">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <!-- col-lg-3 start here -->
+                <div class="tile red">
+                    <!-- tile start here -->
+                    <div class="tile-icon">
+                        <i class="ec-download s64"></i>
+                    </div>
+                    <div class="tile-content">
+                        <div class="number countTo" data-from="0" data-to="13">5</div>
+                        <h3>未处理工单数</h3>
+                    </div>
+                </div>
+                <!-- tile end here -->
+            </div>
+            <!-- col-lg-3 end here -->
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <!-- col-lg-3 start here -->
+                <div class="tile blue">
+                    <!-- tile start here -->
+                    <div class="tile-icon">
+                        <i class="ec-users s64"></i>
+                    </div>
+                    <div class="tile-content">
+                        <div class="number countTo" data-from="0" data-to="107">36</div>
+                        <h3>用户数</h3>
+                    </div>
+                </div>
+                <!-- tile end here -->
+            </div>
+            <!-- col-lg-3 end here -->
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <!-- col-lg-3 start here -->
+                <div class="tile lime">
+                    <!-- tile start here -->
+                    <div class="tile-icon">
+                        <i class="ec-archive s64"></i>
+                    </div>
+                    <div class="tile-content">
+                        <div class="number countTo" data-from="0" data-to="12">28</div>
+                        <h3>一天内部署</h3>
+                    </div>
+                </div>
+                <!-- tile end here -->
+            </div>
+            <!-- col-lg-3 end here -->
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <!-- col-lg-3 start here -->
+                <div class="tile dark">
+                    <!-- tile start here -->
+                    <div class="tile-icon">
+                        <i class="ec-star s64"></i>
+                    </div>
+                    <div class="tile-content">
+                        <div class="number countTo" data-from="0" data-to="2">64</div>
+                        <h3>主机数</h3>
+                    </div>
+                </div>
+                <!-- tile end here -->
+            </div>
+            <!-- tile end here -->
+        </div>
+        <!-- col-lg-3 end here -->
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

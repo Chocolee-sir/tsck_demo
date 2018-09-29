@@ -82,12 +82,24 @@ class GetArgvHelper(object):
     # 基础render数据
     def base_render_argv(self):
         ret = {
+            'userid': self.nid(),
             'username': self.username(),
             'permission_list': self.permission_list(),
             'personal_info': self.personal_info(),
-            'menu_info': self.menu_info()
+            'menu_info': self.menu_info(),
+            "project_list": self.project_list(),
         }
         return ret
+
+    # 获取角色id
+    def get_role_id(self):
+        nid = self.user_info['nid']
+        role_id = models.User2Role.objects.filter(u_id=nid).values('r_id')
+        for i in role_id:
+            return i['r_id']
+
+
+class OrderGetArgv(GetArgvHelper):
 
     # 获取开发权限工单页面数据列表
     def dev_work_list(self, argv=None):
@@ -124,14 +136,6 @@ class GetArgvHelper(object):
         else:
             list_counts = models.Workorders.objects.filter(creator_id=self.nid(), title__icontains=self.request.GET.get('q')).count()
         return list_counts
-
-
-    # 获取角色id
-    def get_role_id(self):
-        nid = self.user_info['nid']
-        role_id = models.User2Role.objects.filter(u_id=nid).values('r_id')
-        for i in role_id:
-            return i['r_id']
 
 
     # 运维获取需要处理的数据列表
@@ -266,3 +270,8 @@ class AssetsGetArgv(GetArgvHelper):
         for part in parts:
             hash.update(str(part).encode('utf8'))
         return hash.hexdigest()
+
+
+class DeployGetArgv(GetArgvHelper):
+
+    pass

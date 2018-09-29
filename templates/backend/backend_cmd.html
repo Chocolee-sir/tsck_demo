@@ -1,0 +1,91 @@
+{% extends 'backend/backend_index.html' %}
+
+{% block pro_name %}部署管理{% endblock %}
+
+{% block pro_in_name %}部署管理{% endblock %}
+
+{% block icon_name %}fa-cloud{% endblock %}
+
+{% block icon_in_name %}fa-cloud{% endblock %}
+
+{% block this_url %}#{% endblock %}
+
+{% block this_in_head_title %}
+    <li>
+        <i class="en-arrow-right7"></i>
+        <i class="{{ menu_info.1 }}"></i>
+        <a href="{{ menu_info.2 }}">{{ menu_info.0 }}</a>
+    </li>
+{% endblock %}
+
+
+
+{% block page_body %}
+
+    <div class="row">
+    {% csrf_token %}
+    <input name="userid" value="{{ userid }}" style="display: none">
+        <div class="col-sm-3">
+            <div class="panel ">
+                <div class="panel-heading">
+                    <h4>可操作的主机列表</h4>
+                </div>
+                <div class="panel-body" id="cmdMenuId">
+                    {% for host_group in project_list %}
+                        <li class="hasSub" style="list-style-type: none">
+                            <a href="#" class="notExpand list-group-item group-list-show">
+                                {{ host_group.project_name }}
+                                <i class="en-arrow-down5 sideNav-arrow" style="transform: rotate(0deg);"></i>
+                                <span class="badge badge-primary">{{ host_group.host_to_remote_users.count }}</span>
+                            </a>
+                            <ul class="nav sub list-group" style="overflow: hidden; display: none;">
+                                {% for host_to_user_obj in host_group.host_to_remote_users.all %}
+                                    <li class="list-group-item">
+                                        <input type="checkbox" tag="host-select" value="{{ host_to_user_obj.id }}">
+                                        {{ host_to_user_obj.remote_user.username }}@{{ host_to_user_obj.host.ip_address }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-9">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h4>命令操作</h4>
+                </div>
+                <div class="panel-body">
+                    <textarea id="cmd_input" class="form-control" placeholder="input your cmd...." rows="3"> </textarea>
+                    <input type="button" onclick="postTask()" id="task_submit_btn" class="btn btn-success pull-right cmd-run" style="margin-top: 5px" value="执行命令">
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h4>任务结果</h4>
+                </div>
+                <hr style="width: 730px;margin-left: 15px;border:none;border-top:2px dotted #b1b1b1;">
+                <div class="panel-body" >
+                    <ul id="task_result_container" class="list-group"></ul>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+

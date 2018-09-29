@@ -23,6 +23,7 @@ from backend.views import login as loginview
 from backend.views import user as userview
 from backend.views import order as orderview
 from backend.views import assets as assetsview
+from backend.views import deploy as deployview
 
 urlpatterns = [
     path('index.html', loginview.index),
@@ -48,5 +49,8 @@ urlpatterns = [
     path('add-assets.html', assetsview.AssetsAddView.as_view()),
     path('edit-assets.html', assetsview.AssetsEditView.as_view()),
     path('gateone-auth.html', assetsview.AssetsGateOneAuthView.as_view()),
+
+    path('deploy-cmd.html', deployview.DeployCmdView.as_view()),
+    path('task-result.html', deployview.task_result),
 
 ]

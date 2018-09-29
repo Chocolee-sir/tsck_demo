@@ -8,7 +8,7 @@ from utils import pager
 
 # 工单首页
 def index_order(request):
-    request_info = GetArgvHelper(request)
+    request_info = OrderGetArgv(request)
     request_info.auth_user()
     current_page = request.GET.get('p')
     if request_info.get_role_id() == 4:
@@ -56,7 +56,7 @@ def index_order(request):
 
 # 创建工单
 def create_order(request):
-    request_info = GetArgvHelper(request)
+    request_info = OrderGetArgv(request)
     request_info.auth_user()
     response = {'status': True, 'message': None}
     if request_info.status():
@@ -91,7 +91,7 @@ def create_order(request):
 
 # 获取 变更内容, 获取删除信息内容等
 def get_detail(request):
-    request_info = GetArgvHelper(request)
+    request_info = OrderGetArgv(request)
     request_info.auth_user()
     print(request.path,request_info.status())
     response = {
@@ -121,7 +121,7 @@ def get_detail(request):
 
 # 开发人员删除工单
 def del_order(request):
-    request_info = GetArgvHelper(request)
+    request_info = OrderGetArgv(request)
     request_info.auth_user()
 
     response = {'status': True, 'data': None}
@@ -140,7 +140,7 @@ def del_order(request):
 
 # 开发人员编辑工单
 def edit_order(request):
-    request_info = GetArgvHelper(request)
+    request_info = OrderGetArgv(request)
     request_info.auth_user()
     response = {'status': True, 'data': None}
     if request_info.status():
@@ -168,7 +168,7 @@ def edit_order(request):
 
 # 运维处理工单
 def ops_handle_order(request):
-    request_info = GetArgvHelper(request)
+    request_info = OrderGetArgv(request)
     request_info.auth_user()
     response = {'status': True, 'message': None}
     if request_info.status():
@@ -197,7 +197,7 @@ def ops_handle_order(request):
 
 # 测试处理工单
 def test_handle_order(request):
-    request_info = GetArgvHelper(request)
+    request_info = OrderGetArgv(request)
     request_info.auth_user()
     response = {'status': True, 'message': None}
     if request_info.status():

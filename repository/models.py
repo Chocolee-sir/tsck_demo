@@ -93,6 +93,7 @@ class Permission2Role(models.Model):
 class Projects(models.Model):
     """项目列表，比如招行项目，兴业项目"""
     project_name = models.CharField(max_length=32, unique=True)
+    host_to_remote_users = models.ManyToManyField("HostToRemoteUser")
 
     class Meta:
         verbose_name_plural = '项目列表'
@@ -219,4 +220,28 @@ class HostToRemoteUser(models.Model):
         return "%s %s"%(self.host, self.remote_user)
 
 
+class Task(models.Model):
+    """批量任务"""
+    task_type_choices = (('cmd','批量命令'),('file-transfer','文件传输'))
+    task_type = models.CharField(choices=task_type_choices,max_length=64)
+    content = models.CharField(max_length=255, verbose_name="任务内容")
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
 
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "%s %s"%(self.task_type,self.content)
+
+
+
+class TaskLogDetail(models.Model):
+    """存储大任务子结果"""
+    task = models.ForeignKey("Task", on_delete=models.CASCADE)
+    host_to_remote_user = models.ForeignKey("HostToRemoteUser", on_delete=models.CASCADE)
+    result = models.TextField(verbose_name="任务执行结果")
+    status_choices = ((0,'initialized'),(1,'success'),(2,'failed'),(3,'timeout'))
+    status = models.SmallIntegerField(choices=status_choices,default=0)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "%s %s"%(self.task,self.host_to_remote_user)

@@ -23,4 +23,5 @@ from backend import views  as vbackend
 
 urlpatterns = [
     path('login.html', vweb.login),
+    path('api.html', vweb.api),
 ]
