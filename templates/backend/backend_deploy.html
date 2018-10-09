@@ -1,0 +1,103 @@
+{% extends 'backend/backend_index.html' %}
+
+{% block pro_name %}部署管理{% endblock %}
+
+{% block pro_in_name %}部署管理{% endblock %}
+
+{% block icon_name %}fa-cloud{% endblock %}
+
+{% block icon_in_name %}fa-cloud{% endblock %}
+
+{% block this_url %}#{% endblock %}
+
+{% block this_in_head_title %}
+    <li>
+        <i class="en-arrow-right7"></i>
+        <i class="{{ menu_info.1 }}"></i>
+        <a href="{{ menu_info.2 }}">{{ menu_info.0 }}</a>
+    </li>
+{% endblock %}
+
+
+
+
+
+
+{% block page_body %}
+
+    <div class="panel panel-default toggle col-md-12">
+        <!-- Start .panel -->
+        <div class="panel-heading">
+            <h3 class="panel-title">部署栏</h3>
+        </div>
+        <div class="panel-body" id="deployBodyId">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+
+                    <div style="display: inline-block;float: left;margin-right: 20px">
+                        <label for="app_list">选择应用模块</label>
+                        <select id="app_list_id" name="app_list" class="form-control select-app-list">
+                            <option value="0">请选择</option>
+                            {% for app in app_list %}
+                                <option value="{{ app.id }}">{{ app.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div style="display: inline-block;float: left;margin-right: 20px">
+                        <label for="version">选择版本</label>
+                        <select id="version_id" name="version" class="form-control">
+                            <option value="0">请选择</option>
+                            {% for v in app_version %}
+                                <option value="{{ v.id }}">{{ v.version }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div style="display: inline-block">
+                        <label for="host_list">选择主机</label>
+                        <select id="select_host_id" name="host_list" class="form-control" >
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+
+                <span style="display: block;font-size: 15px" id="select_sure_result"></span>
+
+                </div>
+
+
+
+                <button type="submit" class="btn btn-primary select-sure-btn">选择确定</button>
+                <button type="submit" class="btn btn-info deploy-ok-btn" disabled="disabled">执行部署</button>
+
+
+            <div>
+                <h4 style="text-align: center">执行内容</h4>
+                <div id="get_result_id">实时输出内容区</div>
+                <div></div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+

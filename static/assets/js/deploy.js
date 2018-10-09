@@ -4,6 +4,7 @@
 
 var ResultRefreshObj;
 
+
 function postTask() {
     var cmd_text = $("#cmd_input").val().trim();
     var selected_host_ids = [];
@@ -87,5 +88,9 @@ function GetTaskResult(task_id) {
 
     });//end getJSOn
 }
+
+
+
+
 
 

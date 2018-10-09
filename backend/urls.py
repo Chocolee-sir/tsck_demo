@@ -52,5 +52,7 @@ urlpatterns = [
 
     path('deploy-cmd.html', deployview.DeployCmdView.as_view()),
     path('task-result.html', deployview.task_result),
+    path('deploy-batch.html', deployview.DeployBatchView.as_view()),
+    path('deploy-run.html', deployview.deploy_run),
 
 ]

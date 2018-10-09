@@ -217,9 +217,10 @@ class HostToRemoteUser(models.Model):
         verbose_name_plural = '主机对应远程账号密码表'
 
     def __str__(self):
-        return "%s %s"%(self.host, self.remote_user)
+        return "%s %s"%(self.host.ip_address, self.remote_user)
 
 
+######################部署管理########################
 class Task(models.Model):
     """批量任务"""
     task_type_choices = (('cmd','批量命令'),('file-transfer','文件传输'))
@@ -232,6 +233,8 @@ class Task(models.Model):
     def __str__(self):
         return "%s %s"%(self.task_type,self.content)
 
+    class Meta:
+        verbose_name_plural = '批量任务表'
 
 
 class TaskLogDetail(models.Model):
@@ -245,3 +248,44 @@ class TaskLogDetail(models.Model):
 
     def __str__(self):
         return "%s %s"%(self.task,self.host_to_remote_user)
+
+    class Meta:
+        verbose_name_plural = '批量任务子结果表'
+
+
+class AppVersion(models.Model):
+    """应用模块版本"""
+    version = models.CharField(max_length=64, unique=True)
+
+    def __str__(self):
+        return self.version
+
+    class Meta:
+        verbose_name_plural = '应用模块版本号'
+
+
+class AppModuleList(models.Model):
+    """应用模块列表"""
+    name = models.CharField(max_length=64, unique=True)
+    jenkins_url = models.CharField(max_length=256)
+    jenkins_jobs_name = models.CharField(max_length=64)
+    deploy_path = models.CharField(max_length=64)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = '应用模块列表'
+
+
+class AppToHostToRemoteUser(models.Model):
+    """应用对应主机列表"""
+    a = models.ForeignKey('AppModuleList', on_delete=models.CASCADE)
+    h = models.ForeignKey('HostToRemoteUser', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "%s-%s@%s" % (self.a.name, self.h.remote_user.username, self.h.host.ip_address)
+
+    class Meta:
+        unique_together = ("a", "h")
+        verbose_name_plural = '应用对应主机列表'

@@ -274,4 +274,17 @@ class AssetsGetArgv(GetArgvHelper):
 
 class DeployGetArgv(GetArgvHelper):
 
-    pass
+    # 获取模块列表
+    def app_list(self):
+        ret = models.AppModuleList.objects.all()
+        return ret
+
+    # 获取版本号
+    def app_version(self):
+        ret = models.AppVersion.objects.all()
+        return ret
+
+    # 获取当前应用对应的主机
+    def get_hosts_info(self, app_id):
+        ret = models.AppToHostToRemoteUser.objects.filter(a__id=app_id).values('h__remote_user__username', 'h__host__ip_address', 'id')
+        return ret
